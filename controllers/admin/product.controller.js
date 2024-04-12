@@ -1,8 +1,11 @@
 const Product = require("../../models/product.model");
+const ProductCategory = require("../../models/product-category.model");
+
 const systemConfig = require("../../config/system")
 const filterStatusHelper = require("../../helper/filterStatus")
 const searchHelper = require("../../helper/search")
 const paginationHelper = require("../../helper/pagination")
+const createTreeHelper = require("../../helper/createTree")
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -124,10 +127,15 @@ module.exports.deleteItem = async (req,res) =>{
 
 // [GET] /admin/products/create 
 module.exports.create = async (req, res) => {
-   
+    let find = {
+        deleted: false,
+    };
+    const category = await ProductCategory.find(find);
+    const newCategory = createTreeHelper.tree(category);
+    
     res.render("admin/pages/products/create",{
         pageTitle: "Add new products",
-        
+        category: newCategory
     })
 }
 
@@ -160,9 +168,13 @@ module.exports.edit = async (req, res) => {
     
         const product = await Product.findOne(find);
     
+        const category = await ProductCategory.find({deleted: false});
+        const newCategory = createTreeHelper.tree(category);
+        
         res.render("admin/pages/products/edit",{
             pageTitle: "Edit product",
-            product: product
+            product: product,
+            category: newCategory
         })
     }catch (error){
         res.redirect(`${systemConfig.prefixAdmin}/products`);
