@@ -4,19 +4,20 @@ include  ../../mixins/table-tree.pug
 
 block main
 
-  
-    h1 Danh mục sản phẩm
+  if(role.permissions.includes("products-category_view"))
+    h1 Products Category
 
     .card.mb-3
-      .card-header Danh sách
+      .card-header List
         .card-body
           .row
             .col-8
             .col-4
+              if(role.permissions.includes("products-category_create"))
                 a(
                   href=`${prefixAdmin}/products-category/create`
                   class="btn btn-outline-success"
-                ) + Thêm mới
+                ) + Add new
 
 
           table(
@@ -27,12 +28,12 @@ block main
               tr
                 th
                   input(type="checkbox" name="checkall")
-                th STT
-                th Hình ảnh
-                th Tiêu đề
-                th Vị trí
-                th Trạng thái
-                th Hành động
+                th No
+                th Image
+                th Title
+                th Position
+                th Status
+                th Action
 
             tbody
               +table-tree(records)
