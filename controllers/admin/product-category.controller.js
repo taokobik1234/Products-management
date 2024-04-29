@@ -35,18 +35,24 @@ module.exports.createPost = async (req, res) => {
     // req.body.price = parseInt(req.body.price);
     // req.body.discountPercentage = parseInt(req.body.discountPercentage);
     // req.body.stock = parseInt(req.body.stock);
-    if(req.body.position==""){
-        const countProducts = await ProductCategory.countDocuments();
-        req.body.position = countProducts + 1;
-    }else{
-        req.body.position = parseInt(req.body.position);
-    }
+    const permissions = res.locals.role.permissions;
 
+    if(permissions.includes("products-category_create")) {
+        if(req.body.position == "") {
+        const count= await ProductCategory.count();
+        req.body.position = count + 1;
+        } else {
+        req.body.position = parseInt(req.body.position);
+        } 
+        const record = new ProductCategory(req.body);
+        await record .save(); 
     
-    const record = new ProductCategory(req.body);
-    await record.save();
-    res.redirect(`${systemConfig.prefixAdmin}/products-category`)
-    
+        res.redirect(`${systemConfig.prefixAdmin}/products-category`);
+
+    } else {
+        res.send("403");
+        return;  
+    }
 }
 
 // [Get] /admin/products-category/edit/:id

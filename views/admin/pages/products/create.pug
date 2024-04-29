@@ -29,28 +29,29 @@ block main
                     id="product_category_id"
                     class="form-control"
                 )
-                    option(value="") -- Chọn danh mục --
+                    option(value="") -- Choose category --
                     if(category)
                         +select-tree(category)
-            //- div(class="form-group form-check form-check-inline")
-            //-     input(
-            //-             type="radio"
-            //-             class="form-check-input"
-            //-             id="featured1"
-            //-             name="featured"
-            //-             value="1"
-            //-     )
-            //-     label(for="featured1" class="form-check-label") Remarkable
-            //- div(class="form-group form-check form-check-inline")
-            //-     input(
-            //-         type="radio"
-            //-         class="form-check-input"
-            //-         id="featured0"
-            //-         name="featured"
-            //-         value="0"
-            //-         checked
-            //-     )
-            //-     label(for="featured0" class="form-check-label") Không
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input"
+                    id="featured1"
+                    name="featured"
+                    value="1"
+                     
+                )
+                label(for="featured1" class="form-check-label") Remarkable
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio"
+                    class="form-check-input"
+                    id="featured0"
+                    name="featured"
+                    value="0"
+                    checked 
+                )
+                label(for="featured0" class="form-check-label") Không
             div(class="form-group")
                 label(for="desc") Description
                 textarea(

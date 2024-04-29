@@ -3,7 +3,7 @@ include ../../mixins/alert.pug
 
 block main
   if(role.permissions.includes("accounts_edit"))
-    h1(class="mb-4") Cập nhật tài khoản
+    h1(class="mb-4") Update account
 
     +alert-success(5000)
     +alert-error(5000)
@@ -15,7 +15,7 @@ block main
         enctype="multipart/form-data"
       )
         div(class="form-group")
-          label(for="fullName") Họ tên *
+          label(for="fullName") Full name *
           input(
             type="text"
             class="form-control"
@@ -35,7 +35,7 @@ block main
             value=data.email
           )
         div(class="form-group")
-          label(for="password") Mật khẩu
+          label(for="password") Password
           input(
             type="password"
             class="form-control"
@@ -43,7 +43,7 @@ block main
             name="password"
           )
         div(class="form-group")
-          label(for="phone") Số điện thoại
+          label(for="phone") Phone number
           input(
             type="text"
             class="form-control"
@@ -70,9 +70,9 @@ block main
             upload-image-preview
           )
         div(class="form-group")
-          label(for="role_id") Phân quyền
+          label(for="role_id") Role
           select(name="role_id" id="role_id" class="form-control")
-            option(disabled) -- Chọn --
+            option(disabled) -- choose --
             each item in roles
               option(
                 value=item.id
@@ -87,7 +87,7 @@ block main
             value="active"
             checked=(data.status === "active" ? true : false)
           )
-          label(for="statusActive" class="form-check-label") Hoạt động
+          label(for="statusActive" class="form-check-label") Active
         div(class="form-group form-check form-check-inline")
           input(
             type="radio"
@@ -97,13 +97,13 @@ block main
             value="inactive"
             checked=(data.status === "inactive" ? true : false)
           )
-          label(for="statusInActive" class="form-check-label") Dừng hoạt động
+          label(for="statusInActive" class="form-check-label") Inacive
         div(class="form-group")
           button(
             type="submit"
             class="btn btn-primary"
-          ) Cập nhật
+          ) Update
     else
-      p Vui lòng tạo nhóm quyền trước khi cập nhật tài khoản
+      p Please create roles permissions before update account
       p
-        a(href=`/${prefixAdmin}/roles/create` class="btn btn-secondary") Tạo nhóm quyền
+        a(href=`/${prefixAdmin}/roles/create` class="btn btn-secondary") Create roles permissions

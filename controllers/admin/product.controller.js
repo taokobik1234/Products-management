@@ -1,5 +1,6 @@
 const Product = require("../../models/product.model");
 const ProductCategory = require("../../models/product-category.model");
+const Account = require("../../models/account.model");
 
 const systemConfig = require("../../config/system")
 const filterStatusHelper = require("../../helper/filterStatus")
@@ -50,6 +51,26 @@ module.exports.index = async (req, res) => {
         .limit(objectPagination.limitItem)
         .skip(objectPagination.skip);
 
+    for(const product of products){
+        //Get info of creator
+        const user = await Account.findOne({
+            _id: product.createdBy.account_id
+        })
+        if(user){
+            product.accountFullname = user.fullName;
+        }
+
+        // get info of previous updator
+        const updatedBy = product.updatedBy.slice(-1)[0]
+        if(updatedBy) {
+            const userUpdated = await Account.findOne({
+                _id: updatedBy.account_id
+            });
+            updatedBy.accountFullName = userUpdated.fullName;
+        }
+    }
+
+    
     // console.log(products); 
     res.render("admin/pages/products/index",{
         pageTitle: "Product",
@@ -89,7 +110,11 @@ module.exports.changeMulti = async (req,res) =>{
         case "delete-all" :
             await Product.updateMany({_id: {$in: ids }}, {
                 deleted: true,
-                deletedAt: new Date(),
+                // deletedAt: new Date(),
+                deletedBy:{
+                    account_id: res.locals.user.id,
+                    deletedAt: new Date(),
+                }
             });
             req.flash("success",`Delete ${ids.length} products success`);
             break;
@@ -119,7 +144,11 @@ module.exports.deleteItem = async (req,res) =>{
     // await Product.deleteOne({_id:id});
     await Product.updateOne({_id: id},{
         deleted: true,
-        deletedAt: new Date()
+        // deletedAt: new Date()
+        deletedBy:{
+            account_id: res.locals.user.id,
+            deletedAt: new Date(),
+        }
     });
     req.flash("success",`Delete  product success`);
     res.redirect("back");
@@ -152,7 +181,9 @@ module.exports.createPost = async (req, res) => {
         req.body.position = parseInt(req.body.position);
     }
 
-    
+    req.body.createAt ={
+        account_id: res.locals.user.id
+    };
     const product = new Product(req.body);
     await product.save();
     res.redirect(`${systemConfig.prefixAdmin}/products`)
