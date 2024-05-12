@@ -34,4 +34,6 @@ header.header
                             -const pathProduct = "/products";
                             a(href= pathProduct) Products
                             if(layoutProductsCategory)
-                                +sub-menu(layoutProductsCategory,pathProduct) 
+                                +sub-menu(layoutProductsCategory,pathProduct)
+                        li 
+                            a(href="/cart") Cart (#{miniCart ? miniCart.totalQuantity : "0"})
