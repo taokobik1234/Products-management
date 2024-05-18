@@ -61,9 +61,9 @@ module.exports.order = async (req,res) => {
            products: products
     };
     
-    console.log(orderObject.products);
+    // console.log(orderObject.products);
     const order = new Order(orderObject);
-    console.log(order)
+    // console.log(order);
     await order.save();
     
     await Cart.updateOne({
