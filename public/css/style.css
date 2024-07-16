@@ -244,6 +244,8 @@
 
 .chat .inner-body {
   padding: 10px;
+  max-height: 450px;
+  overflow-y: auto;
 }
 
 .chat .inner-body .inner-name {
@@ -294,6 +296,17 @@
   cursor: pointer;
 }
 /* End chat */
+
+/* emjipicker */
+.tooltip{
+  visibility: hidden;
+}
+.tooltip.shown {
+  visibility: visible;
+  opacity: 1;
+}
+/* emjipicker */
+
 
 /* Show Alert */
 [show-alert] {

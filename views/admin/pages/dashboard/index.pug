@@ -1,4 +1,9 @@
-extends ../../layout/default.pug 
+extends ../../layout/default.pug
 
-block main 
-    h1 Dashboard    
+block main
+  h1 Trang tổng quan    
+
+  div #{user}
+  div ---------------------------------
+  div #{role.title}
+  div #{role.permissions}
